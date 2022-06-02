@@ -31,6 +31,8 @@ class Column extends React.Component {
   }
 
   listUpdate = (isUp) => {
+    const { updateCallback } = this.props;
+    updateCallback();
     isUp ? this.updateUp() : this.updateDown();
     this.setInitialPos();
   }
@@ -178,7 +180,7 @@ class CombinationLock extends React.Component {
   }
 
   render() {
-    const { combination, onMatch, openText, height, mainClass, ...props } = this.props;
+    const { combination, onMatch, openText, height, mainClass, updateCallback, ...props } = this.props;
     const { opened } = this.state;
 
     return (
@@ -194,6 +196,7 @@ class CombinationLock extends React.Component {
         <div className={`${mainClass}-container`} style={{ overflow: 'hidden', height: height, whiteSpace: 'nowrap' }}>
           { [...combination].map((v, i) =>
             <Column
+              updateCallback={updateCallback}
               key={i}
               id={i}
               checkMatch={this.checkCode}
@@ -212,6 +215,7 @@ class CombinationLock extends React.Component {
 Column.propTypes = {
   height: number,
   checkMatch: func,
+  updateCallback: func,
   isOpen: bool,
   id: number,
   mainClass: string
@@ -222,7 +226,8 @@ CombinationLock.propTypes = {
   height: number,
   onMatch: func,
   openText: string,
-  mainClass: string
+  mainClass: string,
+  updateCallback: func
 }
 
 export default CombinationLock;
